@@ -1,0 +1,357 @@
+using System;
+using System.Drawing;
+using System.Net;
+using System.Security.Policy;
+
+class Point
+{
+    public double x, y;
+    public Point(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+}
+public abstract class Methods
+{
+    public abstract double Perimeter();
+    public abstract double Area();
+    public abstract void Move(double deltaX, double deltaY);
+    public abstract bool IsValid();
+}
+
+class Triangle : Methods
+{
+    private Point p1, p2, p3;
+    public Triangle(Point p1, Point p2, Point p3) 
+    {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+    }
+
+    public Point P1
+    {
+        get { return p1; }
+        set { p1 = value; }
+    }
+    public Point P2
+    {
+        get { return p2; }
+        set { p2 = value; }
+    }
+    public Point P3
+    {
+        get { return p3; }
+        set { p3 = value; }
+    }
+
+    public override void Move(double deltaX, double deltaY)
+    {
+        p1.x += deltaX;
+        p1.y += deltaY;
+        p2.x += deltaX;
+        p2.y += deltaY;
+        p3.x += deltaX;
+        p3.y += deltaY;
+    }
+    public override bool IsValid()
+    {
+        double side1 = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+        double side2 = Math.Sqrt(Math.Pow((p1.x - p3.x), 2) + Math.Pow((p1.y - p3.y), 2));
+        double side3 = Math.Sqrt(Math.Pow((p2.x - p3.x), 2) + Math.Pow((p2.y - p3.y), 2));
+
+        return (side1 + side2 > side3) && (side1 + side3 > side2) && (side2 + side3 > side1);
+    }
+    public override double Area()
+    {
+
+        double side1 = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+        double side2 = Math.Sqrt(Math.Pow((p1.x - p3.x), 2) + Math.Pow((p1.y - p3.y), 2));
+        double side3 = Math.Sqrt(Math.Pow((p2.x - p3.x), 2) + Math.Pow((p2.y - p3.y), 2));
+
+        double semiPerimeter = (side1 + side2 + side3) / 2;
+
+        return Math.Sqrt(semiPerimeter * (semiPerimeter - side1) * (semiPerimeter - side2) * (semiPerimeter - side3));
+    }
+    public override double Perimeter()
+    {
+        double side1 = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+        double side2 = Math.Sqrt(Math.Pow((p1.x - p3.x), 2) + Math.Pow((p1.y - p3.y), 2));
+        double side3 = Math.Sqrt(Math.Pow((p2.x - p3.x), 2) + Math.Pow((p2.y - p3.y), 2));
+
+        return side1 + side2 + side3;
+    }
+}
+class Circle :  Methods
+{
+    private Point p1, p2;
+    public Circle(Point p1, Point p2)
+    {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+
+    public Point P1
+    {
+        get { return p1; }
+        set { p1 = value; }
+    }
+    public Point P2
+    {
+        get { return p2; }
+        set { p2 = value; }
+    }
+
+    public override void Move(double deltaX, double deltaY)
+    {
+        p1.x += deltaX;
+        p1.y += deltaY;
+        p2.x += deltaX;
+        p2.y += deltaY;
+    }
+    public override bool IsValid()
+    {
+        double radius = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+
+        return radius > 0;
+    }
+    public override double Area()
+    {
+        double radius = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+
+        return 3.14 * Math.Pow(radius, 2);
+    }
+    public override double Perimeter()
+    {
+        double radius = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+
+        return 2 * 3.14 * radius;
+    }
+}
+class Trapezoid : Methods
+{
+    private Point p1, p2, p3, p4;
+
+    public Trapezoid(Point p1, Point p2, Point p3, Point p4)
+    {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
+    }
+
+    public Point P1
+    {
+        get { return p1; }
+        set { p1 = value; }
+    }
+    public Point P2
+    {
+        get { return p2; }
+        set { p2 = value; }
+    }
+    public Point P3
+    {
+        get { return p3; }
+        set { p3 = value; }
+    }
+    public Point P4
+    {
+        get { return p4; }
+        set { p4 = value; }
+    }
+
+    public override void Move(double deltaX, double deltaY)
+    {
+        p1.x += deltaX;
+        p1.y += deltaY;
+        p2.x += deltaX;
+        p2.y += deltaY;
+        p3.x += deltaX;
+        p3.y += deltaY;
+        p4.x += deltaX;
+        p4.y += deltaY;
+
+    }
+    public override  bool IsValid()
+    {
+
+        double side1 = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+        double side3 = Math.Sqrt(Math.Pow((p2.x - p3.x), 2) + Math.Pow((p2.y - p3.y), 2));
+        double side2 = Math.Sqrt(Math.Pow((p3.x - p4.x), 2) + Math.Pow((p3.y - p4.y), 2));
+        double side4 = Math.Sqrt(Math.Pow((p1.x - p4.x), 2) + Math.Pow((p1.y - p4.y), 2));
+
+        return side1 * side2 * side3 * side4 != 0;
+    }
+    public override double Area()
+    {
+        double side1 = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+        double side3 = Math.Sqrt(Math.Pow((p2.x - p3.x), 2) + Math.Pow((p2.y - p3.y), 2));
+        double side2 = Math.Sqrt(Math.Pow((p3.x - p4.x), 2) + Math.Pow((p3.y - p4.y), 2));
+        double side4 = Math.Sqrt(Math.Pow((p1.x - p4.x), 2) + Math.Pow((p1.y - p4.y), 2));
+
+        return (side1 + side2) / 2 * Math.Sqrt(side3 * side3 - Math.Pow(((side1 - side2) * (side1 - side2) + side3 * side3 - side4 * side4) / (2 * (side1 - side2)), 2));
+    }
+    public override double Perimeter()
+    {
+        double side1 = Math.Sqrt(Math.Pow((p1.x - p2.x), 2) + Math.Pow((p1.y - p2.y), 2));
+        double side3 = Math.Sqrt(Math.Pow((p2.x - p3.x), 2) + Math.Pow((p2.y - p3.y), 2));
+        double side2 = Math.Sqrt(Math.Pow((p3.x - p4.x), 2) + Math.Pow((p3.y - p4.y), 2));
+        double side4 = Math.Sqrt(Math.Pow((p1.x - p4.x), 2) + Math.Pow((p1.y - p4.y), 2));
+
+        return side1 + side2 + side3 + side4;
+    }
+}
+class Polygon : Methods
+{
+    private Point[] points;
+
+    public Polygon(Point[] points)
+    {
+        this.points = points;
+    }
+
+    public Point[] Points
+    {
+        get { return points; }
+        set { points = value; }
+    }
+
+    public override void Move(double deltaX, double deltaY)
+    {
+        foreach (Point point in points)
+        {
+            point.x += deltaX;
+            point.y += deltaY;
+        }
+    }
+
+    public override bool IsValid()
+    {
+        int numPoints = points.Length;
+
+        if (numPoints < 3)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < numPoints; i++)
+        {
+            int j = (i + 1) % numPoints;
+            int k = (i + 2) % numPoints;
+
+            double side1 = Math.Sqrt(Math.Pow((points[i].x - points[j].x), 2) + Math.Pow((points[i].y - points[j].y), 2));
+            double side2 = Math.Sqrt(Math.Pow((points[i].x - points[k].x), 2) + Math.Pow((points[i].y - points[k].y), 2));
+            double side3 = Math.Sqrt(Math.Pow((points[j].x - points[k].x), 2) + Math.Pow((points[j].y - points[k].y), 2));
+
+            if (side1 + side2 <= side3 || side1 + side3 <= side2 || side2 + side3 <= side1)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public override double Area()
+    {
+        int numPoints = points.Length;
+
+        if (numPoints < 3)
+        {
+            return 0;
+        }
+
+        double area = 0;
+
+        for (int i = 0; i < numPoints; i++)
+        {
+            int j = (i + 1) % numPoints;
+
+            double crossProduct = points[i].x * points[j].y - points[j].x * points[i].y;
+            area += crossProduct;
+        }
+
+        return Math.Abs(area / 2);
+    }
+
+    public override double Perimeter()
+    {
+        int numPoints = points.Length;
+
+        if (numPoints < 3)
+        {
+            return 0;
+        }
+
+        double perimeter = 0;
+
+        for (int i = 0; i < numPoints; i++)
+        {
+            int j = (i + 1) % numPoints;
+
+            double side = Math.Sqrt(Math.Pow((points[i].x - points[j].x), 2) + Math.Pow((points[i].y - points[j].y), 2));
+            perimeter += side;
+        }
+
+        return perimeter;
+    }
+}
+class Person
+{
+    private string fullName;
+    private int age;
+
+    public Person()
+    {
+        fullName = "Unknown";
+        age = 0;
+    }
+
+    public Person(string fullName, int age)
+    {
+        this.fullName = fullName;
+        this.age = age;
+    }
+
+    public void move()
+    {
+        Console.WriteLine($"{fullName} is moving.");
+    }
+
+    public void talk()
+    {
+        Console.WriteLine($"{fullName} is talking.");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Point p1 = new Point(2, 0);
+        Point p2 = new Point(5, 0);
+        Point p3 = new Point(4, 3);
+        Point p4 = new Point(3, 3);
+        Point p5 = new Point(7, 5);
+        Point[] myPoints = new Point[5];
+        myPoints[0] = p1;
+        myPoints[1] = p2;
+        myPoints[2] = p3;
+        myPoints[3] = p4;
+        myPoints[4] = p5;
+
+        Triangle myTriangle = new Triangle(p1, p2, p3);
+        Trapezoid myTrapezoid = new Trapezoid(p1, p2, p3, p4);
+        Circle myCircle = new Circle(p1, p2);
+        Polygon myPolygon = new Polygon(myPoints);
+
+        Person myPerson = new Person();
+        Person myPerson2 = new Person("Иванов Иван Иванович", 20);
+        myPerson.talk();
+        myPerson2.talk();
+        Console.WriteLine(myPolygon.IsValid());
+        Console.WriteLine(myPolygon.Perimeter());
+    }
+}
